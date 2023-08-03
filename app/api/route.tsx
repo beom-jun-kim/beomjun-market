@@ -16,7 +16,3 @@ export default async function handler(
     ok: true,
   });
 }
-
-// 이 페이지 404
-// Unhandled Runtime Error
-// pscale studio error

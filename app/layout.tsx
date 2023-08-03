@@ -50,7 +50,6 @@ export default function RootLayout({
         {hasTabBar ? (
           <nav className="w-full bg-white text-gray-800 border-t fixed left-0 bottom-0 py-5 flex justify-center items-center">
             <ul className="max-w-lg w-full flex justify-around items-center">
-
               {/* 홈 */}
               <li>
                 <Link href="/" className="flex flex-col items-center">
