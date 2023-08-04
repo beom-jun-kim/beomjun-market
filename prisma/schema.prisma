@@ -14,7 +14,7 @@ generator client {
 
 model User {
 
-  // Int : 1,2,3,4 등 정수
+  // Int : 1,2,3,4 등
   // @ : 식별자
   // @default(autoincrement()) : 기본설정 (자동으로 증가하게)
   id Int @id @default(autoincrement())
