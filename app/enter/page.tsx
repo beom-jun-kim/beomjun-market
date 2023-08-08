@@ -49,8 +49,8 @@ const Enter: NextPage = () => {
           <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
             {method === "email" ? (<Input propRegister={register("email")} propName="email" propLabel="Email address" propType="email" propRequired/>) : null}
             {method === "phone" ? (<Input propRegister={register("phone")} propName="phone" propLabel="Phone number" propType="number" kind="phone" propRequired/>) : null}
-            {method === "email" ? <Button text={"Get login link"} /> : null}
-            {method === "phone" ? (<Button text={"Get one-time password"} />) : null}
+            {method === "email" ? <Button text={"Get Login"} /> : null}
+            {method === "phone" ? (<Button text={"submit"} />) : null}
           </form>
 
           <div className="mt-8">
