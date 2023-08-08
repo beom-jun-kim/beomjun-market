@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import Button from "../components/button";
+import Button from "../components/button";
 import Input from "../components/input";
 import { cls } from "../libs/utils";
 import RootLayout from "../layout";
@@ -18,7 +18,7 @@ const Enter: NextPage = () => {
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {reset(); setMethod("email");};
   const onPhoneClick = () => {reset(); setMethod("phone");};
-  const onValid = (data: EnterForm) => {console.log(data);};
+  const onValid = (valueData: EnterForm) => {console.log(valueData);};
   return (
     <RootLayout title="Login" hasTabBar>
       <div className="mt-16 px-4">
@@ -47,10 +47,10 @@ const Enter: NextPage = () => {
             </div>
           </div>
           <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
-            {method === "email" ? (<Input propRegister={register("email", {required: true,})} propName="email" propLabel="Email address" propType="email" propRequired/>) : null}
+            {method === "email" ? (<Input propRegister={register("email")} propName="email" propLabel="Email address" propType="email" propRequired/>) : null}
             {method === "phone" ? (<Input propRegister={register("phone")} propName="phone" propLabel="Phone number" propType="number" kind="phone" propRequired/>) : null}
-            {/* {method === "email" ? <Button text={"Get login link"} /> : null}
-            {method === "phone" ? (<Button text={"Get one-time password"} />) : null} */}
+            {method === "email" ? <Button text={"Get login link"} /> : null}
+            {method === "phone" ? (<Button text={"Get one-time password"} />) : null}
           </form>
 
           <div className="mt-8">
