@@ -14,11 +14,34 @@ interface EnterForm {
 }
 
 const Enter: NextPage = () => {
+  const [subMitting, setSubMitting] = useState(false);
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => {reset(); setMethod("email");};
-  const onPhoneClick = () => {reset(); setMethod("phone");};
-  const onValid = (valueData: EnterForm) => {console.log(valueData);};
+  const onEmailClick = () => {
+    reset();
+    setMethod("email");
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod("phone");
+  };
+  const onValid = (valueData: EnterForm) => {
+    setSubMitting(true);
+    fetch("api/users/route", {
+      method: "POST",
+      body: JSON.stringify(valueData),
+
+      // 이 헤더를 사용하면 서버에게 요청 본문의 형식을 알려줄 수 있다 (인코딩 기준 → 올바르게 파싱)
+      // "Content-Type": "application/json" : json 객체로 파싱하라
+      // headers를 정해주지 않으면 서버는 어떻게 파싱해야할지 몰라 req.body로 선언시 undefind 또는 파싱되지 않는다
+      // Express.js와 같은 웹 프레임워크에서는 이러한 파싱 작업을 도와주는 미들웨어가 존재
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      setSubMitting(false);
+    });
+  };
   return (
     <RootLayout title="Login" hasTabBar>
       <div className="mt-16 px-4">
@@ -28,7 +51,12 @@ const Enter: NextPage = () => {
             <h5 className="text-sm text-gray-500 font-medium">Enter using:</h5>
             <div className="grid  border-b  w-full mt-8 grid-cols-2 ">
               <button
-                className={cls("pb-4 font-medium text-sm border-b-2", method === "email" ? " border-blue-500 text-blue-400": "border-transparent hover:text-gray-400 text-gray-500")}
+                className={cls(
+                  "pb-4 font-medium text-sm border-b-2",
+                  method === "email"
+                    ? " border-blue-500 text-blue-400"
+                    : "border-transparent hover:text-gray-400 text-gray-500"
+                )}
                 onClick={onEmailClick}
               >
                 Email
@@ -46,11 +74,31 @@ const Enter: NextPage = () => {
               </button>
             </div>
           </div>
-          <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
-            {method === "email" ? (<Input propRegister={register("email")} propName="email" propLabel="Email address" propType="email" propRequired/>) : null}
-            {method === "phone" ? (<Input propRegister={register("phone")} propName="phone" propLabel="Phone number" propType="number" kind="phone" propRequired/>) : null}
-            {method === "email" ? <Button text={"Get Login"} /> : null}
-            {method === "phone" ? (<Button text={"submit"} />) : null}
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="flex flex-col mt-8 space-y-4"
+          >
+            {method === "email" ? (
+              <Input
+                propRegister={register("email")}
+                propName="email"
+                propLabel="Email address"
+                propType="email"
+                propRequired
+              />
+            ) : null}
+            {method === "phone" ? (
+              <Input
+                propRegister={register("phone")}
+                propName="phone"
+                propLabel="Phone number"
+                propType="number"
+                kind="phone"
+                propRequired
+              />
+            ) : null}
+            {method === "email" ? <Button text={subMitting ? "loading..." : "Get Login"} /> : null}
+            {method === "phone" ? <Button text={"submit"} /> : null}
           </form>
 
           <div className="mt-8">
