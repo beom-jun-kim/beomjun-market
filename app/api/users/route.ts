@@ -1,14 +1,12 @@
-// import { NextResponse, NextRequest } from "next/server";
 // import { NextApiRequest, NextApiResponse } from "next";
 
-// export const POST = async (request: NextRequest) => {
-//   const body = await request.json();
-//   console.log({body});
-
-//   // Do something
-
-//   return NextResponse.json({ message: "Operation successful" },{ status: 200 });
-// };
+// export default function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method !== "POST") {
+//     res.status(401).end();
+//   }
+//   console.log(req.body.email);
+//   res.status(200).end();
+// }
 
 import { NextResponse, NextRequest } from "next/server";
 
