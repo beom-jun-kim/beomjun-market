@@ -27,7 +27,7 @@ const Enter: NextPage = () => {
   };
   const onValid = async (valueData: EnterForm) => {
     setSubMitting(true);
-    await fetch("/api/users/route", {
+    await fetch("/api/users", {
       method: "POST",
       body: JSON.stringify(valueData),
       
@@ -36,7 +36,7 @@ const Enter: NextPage = () => {
       // headers를 정해주지 않으면 서버는 어떻게 파싱해야할지 몰라 req.body로 선언시 undefind 또는 파싱되지 않는다
       // Express.js와 같은 웹 프레임워크에서는 이러한 파싱 작업을 도와주는 미들웨어가 존재
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     }).then(() => {
       setSubMitting(false);
