@@ -25,12 +25,12 @@ const Enter: NextPage = () => {
     reset();
     setMethod("phone");
   };
-  const onValid = (valueData: EnterForm) => {
+  const onValid = async (valueData: EnterForm) => {
     setSubMitting(true);
-    fetch("api/users/route", {
+    await fetch("/api/users/route", {
       method: "POST",
       body: JSON.stringify(valueData),
-
+      
       // 이 헤더를 사용하면 서버에게 요청 본문의 형식을 알려줄 수 있다 (인코딩 기준 → 올바르게 파싱)
       // "Content-Type": "application/json" : json 객체로 파싱하라
       // headers를 정해주지 않으면 서버는 어떻게 파싱해야할지 몰라 req.body로 선언시 undefind 또는 파싱되지 않는다
