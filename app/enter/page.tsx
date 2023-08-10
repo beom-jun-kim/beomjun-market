@@ -3,11 +3,11 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../components/button";
-import Input from "../components/input";
-import { cls } from "../libs/client/utils";
-import RootLayout from "../layout";
-import useMutation from "../libs/client/useMutation";
+import Button from "@/app/components/button";
+import Input from "@/app/components/input";
+import { cls } from "@/app/libs/client/utils";
+import RootLayout from "@/app/layout";
+import useMutation from "@/app/libs/client/useMutation";
 
 interface EnterForm {
   email?: string;

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import RootLayout from "../layout";
+import RootLayout from "@/app/layout";
 
 const Live: NextPage = () => {
   return (
