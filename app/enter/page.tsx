@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../components/button";
 import Input from "../components/input";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 import RootLayout from "../layout";
+import useMutation from "../libs/client/useMutation";
 
 interface EnterForm {
   email?: string;
@@ -14,6 +15,9 @@ interface EnterForm {
 }
 
 const Enter: NextPage = () => {
+
+  // useMutation : 첫번째 인자는 fn , 두번째는 obj
+  const [enter, { loading, data, error }] = useMutation("/api/users");
   const [subMitting, setSubMitting] = useState(false);
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
@@ -26,22 +30,9 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = async (valueData: EnterForm) => {
-    setSubMitting(true);
-    await fetch("/api/users", {
-      method: "POST",
-      body: JSON.stringify(valueData),
-      
-      // 이 헤더를 사용하면 서버에게 요청 본문의 형식을 알려줄 수 있다 (인코딩 기준 → 올바르게 파싱)
-      // "Content-Type": "application/json" : json 객체로 파싱하라
-      // headers를 정해주지 않으면 서버는 어떻게 파싱해야할지 몰라 req.body로 선언시 undefind 또는 파싱되지 않는다
-      // Express.js와 같은 웹 프레임워크에서는 이러한 파싱 작업을 도와주는 미들웨어가 존재
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(() => {
-      setSubMitting(false);
-    });
+    enter(valueData);
   };
+  console.log("loading",loading,"data",data, "error",error);
   return (
     <RootLayout title="Login" hasTabBar>
       <div className="mt-16 px-4">
@@ -97,7 +88,9 @@ const Enter: NextPage = () => {
                 propRequired
               />
             ) : null}
-            {method === "email" ? <Button text={subMitting ? "loading..." : "Get Login"} /> : null}
+            {method === "email" ? (
+              <Button text={subMitting ? "loading..." : "Get Login"} />
+            ) : null}
             {method === "phone" ? <Button text={"submit"} /> : null}
           </form>
 

@@ -3,7 +3,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cls } from "./libs/utils";
+import { cls } from "./libs/client/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
