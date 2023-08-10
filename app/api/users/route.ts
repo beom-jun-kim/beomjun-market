@@ -10,20 +10,16 @@
 
 import { NextResponse, NextRequest } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (req:NextRequest) => {
   try {
     const body = await req.json();
-    console.log(body.email);
+    console.log(body);
     
-    return NextResponse.json({ message: "Operation successful" },{ status: 200 });
+    // NextResponse.JSON()은 첫 번째 인자로 응답 본문을, 두 번째 인자로 옵션 객체
+    return NextResponse.json({ status: 200 });
   } catch (error) {
     console.error(error);
     
-    return NextResponse.json({ message: "Error occurred" },{ status: 500 });
+    return NextResponse.json({ status: 500 });
   }
 };
-
-
-
-
-
