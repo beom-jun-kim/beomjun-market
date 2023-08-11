@@ -11,12 +11,6 @@ export default function withHandler(
   // 먼저 실행되는 함수. 이후 handler return
   return async function (req: NextApiRequest, res: NextApiResponse) {
     
-=======
-export default function withHandler(method: "GET" | "POST" | "DELETE",fn: (req: NextApiRequest, res: NextApiResponse) => void) {
-
-  // 먼저 실행되는 함수. 이후 handler return
-  return async function (req: NextApiRequest, res: NextApiResponse) {
-
     // 클라이언트에서 요청한 메서드와 매개변수로 받은 method 비교
     if (req.method !== method) {
       return res.status(405).end();
