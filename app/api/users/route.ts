@@ -1,7 +1,3 @@
-import { NextRequest, NextResponse} from "next/server";
-import withHandler from "@/app/libs/server/withHandler";
-// import client from "@/app/libs/server/client";
-
 export const POST = async (req:NextRequest) => {
   try {
 
