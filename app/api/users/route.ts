@@ -13,7 +13,6 @@ export const POST = async (req:NextRequest) => {
     return NextResponse.json({mes:"성공"},{ status: 200 });
   } catch (error) {
     console.error(error);
-
     return NextResponse.json({mes:"실패"},{ status: 500 });
   }
 };
