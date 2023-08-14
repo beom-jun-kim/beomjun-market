@@ -14,7 +14,7 @@ type useMutationResult = [(data: any) => void, useMutationState];
 // 커스텀 훅
 export default function useMutation(url: string): useMutationResult {
   const [state, setState] = useState<useMutationState>({
-    loading: ,
+    loading: false,
     data: undefined,
     error: undefined,
   });
