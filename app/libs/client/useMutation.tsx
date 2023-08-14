@@ -7,7 +7,7 @@ interface useMutationState {
 }
 
 // 배열로 두개의 반환값의 타입을 반환
-// 두가지 서로 다른 종류의 값을 함께 반환하고 활용하기 위헤
+// 두가지 서로 다른 종류의 값을 함께 반환하고 활용하기 위해
 // 두개의 배열 반환 (1. api요청을 보내는 로직 2. 상태를 업데이트 하는 로직)
 type useMutationResult = [(data: any) => void, useMutationState];
 
