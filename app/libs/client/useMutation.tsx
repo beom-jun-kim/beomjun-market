@@ -21,7 +21,7 @@ export default function useMutation(url: string): useMutationResult {
 
   // 백엔드로 보낸 data를 받는 fn
   function mutation(data: any) {
-    setState((prev) => ({...prev,loading:true}));
+    setState((prev) => ({ ...prev, loading: true }));
 
     // api 요청을 보내는 로직
     fetch(url, {
@@ -31,12 +31,11 @@ export default function useMutation(url: string): useMutationResult {
       },
       body: JSON.stringify(data),
     })
-
       // 상태를 업데이트 하는 로직 : api 요청에 따른 상태 변화를 추적하고 렌더링에 활용
       .then((response) => response.json().catch(() => {}))
-      .then((data) => setState((prev) => ({...prev,data})))
-      .catch((error) => setState((prev)=> ({...prev,error})))
-      .finally(() => setState((prev) => ({...prev, loading:false})));
+      .then((data) => setState((prev) => ({ ...prev, data })))
+      .catch((error) => setState((prev) => ({ ...prev, error })))
+      .finally(() => setState((prev) => ({ ...prev, loading: false })));
   }
 
   // useMutation 훅은 두가지 주요 기능을 제공
