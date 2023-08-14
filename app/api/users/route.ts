@@ -18,14 +18,3 @@ export const POST = async (req:NextRequest) => {
 };
 
 export default withHandler("POST", POST);
-
-// import { NextApiRequest, NextApiResponse } from "next";
-// import withHandler from "@/app/libs/server/withHandler";
-// import client from "@/app/libs/server/client";
-
-// async function handler(req: NextApiRequest, res: NextApiResponse) {
-//   console.log(req.body);
-//   return res.status(200).end();
-// }
-
-// export default withHandler("POST", handler);
