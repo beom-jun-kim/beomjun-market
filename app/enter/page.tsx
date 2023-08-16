@@ -15,7 +15,6 @@ interface EnterForm {
 }
 
 const Enter: NextPage = () => {
-
   // useMutation : 첫번째 인자는 fn , 두번째는 obj
   const [enter, { loading, data, error }] = useMutation("/api/users");
   const [subMitting, setSubMitting] = useState(false);
@@ -30,9 +29,10 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = async (valueData: EnterForm) => {
+    if (loading) return;
     enter(valueData);
   };
-  console.log("loading",loading,"data",data, "error",error);
+  console.log("loading", loading, "data", data, "error", error);
   return (
     <RootLayout title="Login" hasTabBar>
       <div className="mt-16 px-4">
