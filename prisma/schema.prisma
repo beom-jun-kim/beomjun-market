@@ -21,7 +21,7 @@ model User {
 
   // ? : 필수가 아닌 선택옵션
   // unique : 유일하게
-  phone Int? @unique 
+  phone Int? @unique
   email String? @unique
   name String
   avatar String?
