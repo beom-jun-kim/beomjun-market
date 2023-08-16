@@ -4,49 +4,27 @@ import client from "@/app/libs/server/client";
 
 export const POST = async (req: NextRequest) => {
   const { email, phone } = await req.json();
-  let user;
+  const payload = phone ? { phone: +phone } : { email };
 
-  // upsert : 생성 및 수정
-  user = await client.user.upsert
+  // upsert : 데이터 생성 및 수정(사용자 레코드를 업데이트, 존재하지 않는 경우 생성)
+  const user = await client.user.upsert({
+    where: {
 
-  // if (email) {
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       email,
-  //     },
-  //   });
-  //   console.log("사용자를 찾았음");
-  //   if (!user) {
-  //     console.log("사용자를 찾지못했음!");
-  //     user = await client.user.create({
-  //       data: {
-  //         name: "anonymous",
-  //         email,
-  //       },
-  //     });
-  //   }
-  //   console.log("user", user);
-  // }
-  // if (phone) {
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       phone: +phone,
-  //     },
-  //   });
-  //   console.log("사용자를 찾았음");
-  //   if (!user) {
-  //     console.log("사용자를 찾지못했음!");
-  //     user = await client.user.create({
-  //       data: {
-  //         name: "anonymous",
-  //         phone: +phone,
-  //       },
-  //     });
-  //   }
-  //   console.log("user", user);
-  // }
+      // 데이터가 존재하는지 확인, 존재하면 update 실행
+      ...payload,
+    },
 
-  return NextResponse.json(user,{status:200});
+    // 데이터가 존재하지 않으면 생성
+    create: {
+      name: "beomjun",
+      ...payload,
+    },
+
+    // 아무것도 내보내지 않기에 빈 객체
+    update: {},
+  });
+
+  return NextResponse.json(user, { status: 200 });
 };
 
 export default withHandler("POST", POST);
