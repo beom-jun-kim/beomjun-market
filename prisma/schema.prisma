@@ -39,7 +39,7 @@ model Token {
 
   // 유저의 이메일이나 폰 번호 정보가 들어감
   // 중요! schema에서 정한 name이랑 넘겨주는 데이터 name이랑 같아야함 (payload)
-  payload   String   @unique
+  payload String @unique
 
   // 자동완성되지 않을 때 콘솔창에 "npx prisma foirmat"
   // 네임스페이스 형태로 데이터 접근가능
