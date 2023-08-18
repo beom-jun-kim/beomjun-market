@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  url      = env("DATABASE_URL")
-  provider = "mysql"
+  url          = env("DATABASE_URL")
+  provider     = "mysql"
   relationMode = "prisma"
 }
 
@@ -11,9 +11,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 model User {
-
   // Int : 1,2,3,4 등
   // @ : 식별자
   // @default(autoincrement()) : 기본설정 (자동으로 증가하게)
@@ -21,9 +19,9 @@ model User {
 
   // ? : 필수가 아닌 선택옵션
   // unique : 유일하게
-  phone Int? @unique
-  email String? @unique
-  name String
+  phone  Int?    @unique
+  email  String? @unique
+  name   String
   avatar String?
 
   // DateTime : 날짜를 나타내는 타입
@@ -32,4 +30,28 @@ model User {
 
   // updatedAt : 유저가 업데이트 될 때마다 field 변화 인지
   updated DateTime @updatedAt()
+  tokens   Token[]
 }
+
+// 추가후 npx prisma db push : db를 수정하는 동시에 prisma client를 만들어줌
+model Token {
+  id Int @id @default(autoincrement())
+
+  // 유저의 이메일이나 폰 번호 정보가 들어감
+  // 중요! schema에서 정한 name이랑 넘겨주는 데이터 name이랑 같아야함 (payload)
+  payload String @unique
+
+  // 자동완성되지 않을 때 콘솔창에 "npx prisma foirmat"
+  // 네임스페이스 형태로 데이터 접근가능
+  user    User     @relation(fields: [userId], references: [id])
+
+  // db에 실제 user전체 데이터가 들어가지 않아서
+  userId  Int
+  created DateTime @default(now())
+  updated DateTime @updatedAt()
+  
+  @@index([userId])
+}
+
+
+// 서버연결 안될시 : 서버 종료후 , connet명령어 후 push 명령어 후 서버시작
