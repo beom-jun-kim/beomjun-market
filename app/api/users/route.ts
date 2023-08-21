@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import withHandler from "@/app/libs/server/withHandler";
+import withHandler,{ResponseType} from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 
 export const POST = async (req: NextRequest) => {
   const { email, phone } = await req.json();
+
+  const user = phone ? { phone: +phone } : { email };
+  if (!user) {
+    NextResponse.json({ status: 400 });
+  }
+  const payload =
+    Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
   const payload = phone ? { phone: +phone } : { email };
 
   // ※ connectOrCreate로 user생성 및 토큰 연결까지 해주기에 필요X
@@ -27,7 +34,11 @@ export const POST = async (req: NextRequest) => {
   const token = await client.token.create({
     // data: ctrl +클릭 , 값에 user가 꼭 필요하다고 나온다(TokenCreateInput)
     data: {
-      payload: "1234",
+
+      payload,
+
+      // token 생성시 user와 연결
+      user: {
 
       // token 생성시 user와 연결
       user: {
@@ -36,6 +47,14 @@ export const POST = async (req: NextRequest) => {
         connectOrCreate: {
           where: {
             // 데이터가 존재하는지 확인, 존재하면 update 실행
+
+            ...user,
+          },
+
+          // 데이터가 존재하지 않으면 생성
+          create: {
+            name: "beomjun",
+            ...user,
             ...payload,
           },
       
@@ -55,5 +74,6 @@ export const POST = async (req: NextRequest) => {
 
   return NextResponse.json(token, { status: 200 });
 };
+
 
 export default withHandler("POST", POST);
