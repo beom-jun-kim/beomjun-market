@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+
+export interface ResponseType {
+  ok:boolean;
+  [key:string]:any;
+}
+
 // 첫번째 인자로 메서드 , 두번째 인자로 fn
 export default function withHandler(
   method: "GET" | "POST" | "DELETE",
