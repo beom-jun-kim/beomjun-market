@@ -1,19 +1,21 @@
 import { useState } from "react";
 
-interface useMutationState {
+interface useMutationState<T> {
   loading: boolean;
-  data?: object;
+  data?: T;
   error?: object;
 }
 
 // 배열로 두개의 반환값의 타입을 반환
 // 두가지 서로 다른 종류의 값을 함께 반환하고 활용하기 위해
 // 두개의 배열 반환 (1. api요청을 보내는 로직 2. 상태를 업데이트 하는 로직)
-type useMutationResult = [(data: any) => void, useMutationState];
+type useMutationResult<T> = [(data: any) => void, useMutationState<T>];
 
 // 커스텀 훅
-export default function useMutation(url: string): useMutationResult {
-  const [state, setState] = useState<useMutationState>({
+export default function useMutation<T = any>(
+  url: string
+): useMutationResult<T> {
+  const [state, setState] = useState<useMutationState<T>>({
     loading: false,
     data: undefined,
     error: undefined,

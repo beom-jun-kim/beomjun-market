@@ -19,7 +19,8 @@ model User {
 
   // ? : 필수가 아닌 선택옵션
   // unique : 유일하게
-  phone  Int?    @unique
+  // BigInt : 좀 더 긴 정수( ex) input에 입력되는 전화번호 ) 사용 가능, string으로도 가능
+  phone  BigInt?    @unique
   email  String? @unique
   name   String
   avatar String?
@@ -44,13 +45,14 @@ model Token {
 
   // 자동완성되지 않을 때 콘솔창에 "npx prisma foirmat"
   // 네임스페이스 형태로 데이터 접근가능
-  user    User     @relation(fields: [userId], references: [id])
+  // onDelete : 삭제 되었을때 동작
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // db에 실제 user전체 데이터가 들어가지 않아서
   userId  Int
   created DateTime @default(now())
   updated DateTime @updatedAt()
-  
+    
   @@index([userId])
 }
 
