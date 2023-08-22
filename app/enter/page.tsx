@@ -46,7 +46,11 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = async (valueData: EnterForm) => {
+
+    // if (loading) return : 새로운 요청을 보내지 않도록 함수 실행을 중지
     if (loading) return;
+
+    // loading 상태가 false라면 api 요청을 위한 함수 호출
     enter(valueData);
   };
 
