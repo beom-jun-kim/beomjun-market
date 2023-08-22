@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest) => {
 
   const user = phone ? { phone: +phone } : { email };
   if (!user) {
-    NextResponse.json({ status: 400 });
+    NextResponse.json({ ok: false, status: 400 });
   }
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
@@ -64,7 +64,8 @@ export const POST = async (req: NextRequest) => {
 
   console.log(token);
 
-  return NextResponse.json(token, { status: 200 });
+  // NextResponse.json는 첫번째 인자로 응답 데이터 객체를 받아 객체 형식으로 전달
+  return NextResponse.json({ ok: true, token, status: 200 });
 };
 
 export default withHandler("POST", POST);
