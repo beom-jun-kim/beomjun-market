@@ -1,9 +1,9 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@/app/libs/server/withHandler";
+import {withHandler, ResponseType } from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 
-async function POST(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
+export async function POST(req: NextApiRequest, res: NextApiResponse<ResponseType>) {
 
   // session :  서버측에서 유저의 상태를 유지하고 관리
   console.log(req.session);
