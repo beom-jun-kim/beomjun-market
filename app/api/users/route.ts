@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import withHandler, { ResponseType } from "@/app/libs/server/withHandler";
+import {withHandler} from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 import smtpTransport from "@/app/libs/server/email";
 
-async function POST (req: NextApiRequest, res:NextApiResponse) {
+export async function POST (req: NextApiRequest, res:NextApiResponse) {
   const { email, phone } = await req.body;
 
   const user = phone ? { phone: +phone } : { email };
@@ -65,4 +65,4 @@ async function POST (req: NextApiRequest, res:NextApiResponse) {
   return res.status(200).end();
 };
 
-export default withHandler("POST", POST);
+export { withHandler };
