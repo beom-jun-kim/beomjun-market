@@ -32,7 +32,7 @@ const Enter: NextPage = () => {
   // confirmToken으로 이름을 바꿀 수 있는 이유, useMutation이 배열을 리턴하기 때문
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<MutationResult>("/api/token");
-    
+
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const { register: registerToken, handleSubmit: handleSubmitToken } =
     useForm<TokenForm>();
@@ -46,13 +46,17 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = async (valueData: EnterForm) => {
+    // if (loading) return : 새로운 요청을 보내지 않도록 함수 실행을 중지
     if (loading) return;
+
+    // loading 상태가 false라면 api 요청을 위한 함수 호출
     enter(valueData);
   };
 
   const onTokenValid = (tokenValueData: TokenForm) => {
     if (tokenLoading) return;
     confirmToken(tokenValueData);
+    console.log(tokenValueData);
   };
   return (
     <RootLayout title="Login" hasTabBar>
