@@ -1,19 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 import smtpTransport from "@/app/libs/server/email";
 
 export async function POST(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
+  req: NextRequest,
+  res: NextResponse<ResponseType>
 ) {
-  const { email, phone } = await req.body;
+  const { email, phone } = await req.json();
   console.log("email", email);
   console.log("phone", phone);
 
   const user = phone ? { phone: +phone } : { email };
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
+
   const token = await client.token.create({
     // data: ctrl +클릭 , 값에 user가 꼭 필요하다고 나온다(TokenCreateInput)
     data: {
@@ -60,10 +61,8 @@ export async function POST(
 
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
 
-  console.log(token);
-
   // NextResponse.json는 첫번째 인자로 응답 데이터 객체를 받아 객체 형식으로 전달
-  return res.status(200).json({ ok: true });
+  return NextResponse.json({ token, ok: true , status:200 });
 }
 
 export { withHandler };

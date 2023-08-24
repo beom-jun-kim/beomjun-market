@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+
+// 제네릭을 주는 이유  : 각각의 다른 데이터 타입을 호출(두개 이상의 데이터를 다루기 위해)
 interface useMutationState<T> {
   loading: boolean;
   data?: T;

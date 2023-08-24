@@ -18,16 +18,21 @@ export async function GET(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  console.log(req.session.user);
-  const profile = await client.user.findUnique({
-    where: {
-      id: req.session.user?.id,
-    },
-  });
-  return res.json({ ok: true, profile });
+  try {
+    console.log(req.session.user);
+    const profile = await client.user.findUnique({
+      where: {
+        id: req.session.user?.id,
+      },
+    });
+    res.status(200).json({ ok: true, profile });
+  } catch(error){
+    console.log(error);
+    res.status(500).json({ok:false,error:"error"});
+  }
 }
 
-export default withIronSessionApiRoute(withHandler("GET",GET), {
+export const getProfileRoute = withIronSessionApiRoute(GET, {
   cookieName: "beomjun_session",
   password:
     "548213218495413214654546546584984545641324132131546542513215884231",
