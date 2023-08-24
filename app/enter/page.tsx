@@ -23,7 +23,6 @@ interface MutationResult {
 }
 
 const Enter: NextPage = () => {
-  
   // useMutation : 첫번째 인자는 fn , 두번째는 obj
   // 유저 데이터 form hook
   const [enter, { loading, data, error }] =
@@ -52,6 +51,7 @@ const Enter: NextPage = () => {
 
     // loading 상태가 false라면 api 요청을 위한 함수 호출
     enter(valueData);
+    console.log(valueData);
   };
 
   const onTokenValid = (tokenValueData: TokenForm) => {
