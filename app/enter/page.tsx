@@ -23,6 +23,7 @@ interface MutationResult {
 }
 
 const Enter: NextPage = () => {
+  
   // useMutation : 첫번째 인자는 fn , 두번째는 obj
   // 유저 데이터 form hook
   const [enter, { loading, data, error }] =
@@ -32,7 +33,7 @@ const Enter: NextPage = () => {
   // confirmToken으로 이름을 바꿀 수 있는 이유, useMutation이 배열을 리턴하기 때문
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<MutationResult>("/api/token");
-    
+
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const { register: registerToken, handleSubmit: handleSubmitToken } =
     useForm<TokenForm>();
@@ -45,8 +46,7 @@ const Enter: NextPage = () => {
     reset();
     setMethod("phone");
   };
-  const onValid = async (valueData: EnterForm) => {
-
+  const onValid = (valueData: EnterForm) => {
     // if (loading) return : 새로운 요청을 보내지 않도록 함수 실행을 중지
     if (loading) return;
 
