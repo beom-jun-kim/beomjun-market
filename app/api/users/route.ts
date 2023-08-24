@@ -8,14 +8,13 @@ export async function POST(
   res: NextApiResponse<ResponseType>
 ) {
   const { email, phone } = await req.body;
-  console.log("email",email);
-  console.log("phone",phone);
+  console.log("email", email);
+  console.log("phone", phone);
 
   const user = phone ? { phone: +phone } : { email };
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
   const token = await client.token.create({
-
     // data: ctrl +클릭 , 값에 user가 꼭 필요하다고 나온다(TokenCreateInput)
     data: {
       payload,
@@ -24,7 +23,7 @@ export async function POST(
       user: {
         // connectOrCreate : user가 있을 경우 token연결. 없으면 생성 후 연결
         connectOrCreate: {
-          where: {...user,},
+          where: { ...user },
 
           // 데이터가 존재하지 않으면 생성
           create: {
