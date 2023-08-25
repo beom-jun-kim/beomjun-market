@@ -2,14 +2,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
-
-declare module "iron-session" {
-  interface IronSessionData {
-    user?: {
-      id: number;
-    };
-  }
-}
+import { withApiSession } from "@/app/libs/server/withSession";
 
 export async function POST(
   req: NextApiRequest,
@@ -36,18 +29,14 @@ export async function POST(
 
     // 세션에 저장한 변경 사항이 실제 서버에 반영
     await req.session.save();
-    res.status(200).json({ ok: true, token });
+    res.json({ ok: true });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, error: "error" });
+    res.json({ ok: false, error: "error" });
   }
 }
 
-export const getProfileRoute = withIronSessionApiRoute(POST, {
-  cookieName: "beomjun_session",
-  password:
-    "548213218495413214654546546584984545641324132131546542513215884231",
-});
+export const getTokenRoute = withApiSession(POST);
 
 // 1. 유저 로그인시 서버는 세션 데이터 저장
 // 2. 이 세션 id를 클라이언트의 쿠키로 저장 (쿠키는 텍스트파일로 저장되는 데이터 조각)
