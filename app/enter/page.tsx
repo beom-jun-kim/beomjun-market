@@ -61,10 +61,10 @@ const Enter: NextPage = () => {
 
   const router = useRouter();
   useEffect(() => {
-    if (tokenData) {
+    if (tokenData?.ok) {
       router.push("/");
     }
-  }, []);
+  }, [tokenData,router]);
 
   return (
     <RootLayout title="Login" hasTabBar>
