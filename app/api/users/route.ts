@@ -8,8 +8,6 @@ export async function POST(
   res: NextResponse<ResponseType>
 ) {
   const { email, phone } = await req.json();
-  console.log("email", email);
-  console.log("phone", phone);
 
   const user = phone ? { phone: +phone } : { email };
   const payload =

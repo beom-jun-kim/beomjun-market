@@ -1,13 +1,14 @@
 "use client";
 
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import { cls } from "@/app/libs/client/utils";
 import RootLayout from "@/app/layout";
 import useMutation from "@/app/libs/client/useMutation";
+import { useRouter } from "next/router";
 
 interface EnterForm {
   email?: string;
@@ -51,13 +52,20 @@ const Enter: NextPage = () => {
 
     // loading 상태가 false라면 api 요청을 위한 함수 호출
     enter(valueData);
-    console.log(valueData);
   };
 
   const onTokenValid = (tokenValueData: TokenForm) => {
     if (tokenLoading) return;
     confirmToken(tokenValueData);
   };
+
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData) {
+      router.push("/");
+    }
+  }, []);
+
   return (
     <RootLayout title="Login" hasTabBar>
       <div className="mt-16 px-4">
