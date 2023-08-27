@@ -12,23 +12,30 @@ export async function POST(
     console.log(req.session);
     const { token } = await req.body;
 
-    const exists = await client.token.findUnique({
+    const foundToken = await client.token.findUnique({
       where: {
         payload: token,
       },
     });
 
-    if (!exists) {
+    if (!foundToken) {
       return res.status(400).end();
     }
 
     // user는 세션 데이터에서 유저정보 객체
     req.session.user = {
-      id: exists.userId,
+      id: foundToken.userId,
     };
 
     // 세션에 저장한 변경 사항이 실제 서버에 반영
     await req.session.save();
+
+    // 토큰 삭제
+    await client.token.deleteMany({
+      where:{
+        userId:foundToken.userId,
+      }
+    })
     res.json({ ok: true });
   } catch (error) {
     console.log(error);

@@ -1,15 +1,16 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   url          = env("DATABASE_URL")
   provider     = "mysql"
   relationMode = "prisma"
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
 
 model User {
 
@@ -18,7 +19,7 @@ model User {
   id Int @id @default(autoincrement())
 
   // BigInt : 좀 더 긴 정수( ex) input에 입력되는 전화번호 ) 사용 가능, string으로도 가능
-  phone  Int? @unique
+  phone  String? @unique
   email  String? @unique
   name   String
   avatar String?
