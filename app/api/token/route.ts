@@ -36,6 +36,7 @@ export async function POST(
         userId:foundToken.userId,
       }
     })
+    
     res.json({ ok: true });
   } catch (error) {
     console.log(error);
