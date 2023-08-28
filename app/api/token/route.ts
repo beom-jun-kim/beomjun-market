@@ -27,6 +27,8 @@ export async function POST(
 
     // 세션에 저장한 변경 사항이 실제 서버에 반영
     await req.session.save();
+
+    // 토큰 삭제
     await client.token.deleteMany({
       where: {
         userId: foundToken.userId,
