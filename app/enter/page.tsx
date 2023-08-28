@@ -8,7 +8,7 @@ import Input from "@/app/components/input";
 import { cls } from "@/app/libs/client/utils";
 import RootLayout from "@/app/layout";
 import useMutation from "@/app/libs/client/useMutation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface EnterForm {
   email?: string;
@@ -64,7 +64,7 @@ const Enter: NextPage = () => {
     if (tokenData?.ok) {
       router.push("/");
     }
-  }, [tokenData,router]);
+  }, [tokenData, router]); /* 둘중 하나가 값이 변경 될 때 랜더링  */
 
   return (
     <RootLayout title="Login" hasTabBar>
