@@ -1,14 +1,12 @@
-import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
-import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
+import { withApiHandler, ApiResponseType } from "@/app/libs/server/withApiHandler";
 import client from "@/app/libs/server/client";
 import { withApiSession } from "@/app/libs/server/withSession";
 
 export async function POST(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseType>
+  res: NextApiResponse<ApiResponseType>
 ) {
-  try {
     console.log(req.session);
     const { token } = await req.body;
 
@@ -32,19 +30,14 @@ export async function POST(
 
     // 토큰 삭제
     await client.token.deleteMany({
-      where:{
-        userId:foundToken.userId,
-      }
-    })
-    
-    res.json({ ok: true });
-  } catch (error) {
-    console.log(error);
-    res.json({ ok: false, error: "error" });
-  }
+      where: {
+        userId: foundToken.userId,
+      },
+    });
+    return res.json({ ok: true });
 }
 
-export const getTokenRoute = withApiSession(POST);
+export const getTokenRoute = withApiSession(withApiHandler("POST",POST));
 
 // 1. 유저 로그인시 서버는 세션 데이터 저장
 // 2. 이 세션 id를 클라이언트의 쿠키로 저장 (쿠키는 텍스트파일로 저장되는 데이터 조각)
