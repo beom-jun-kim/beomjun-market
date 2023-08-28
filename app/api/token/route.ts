@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withApiHandler, ApiResponseType } from "@/app/libs/server/withApiHandler";
+import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 import { withApiSession } from "@/app/libs/server/withSession";
 
 export async function POST(
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponseType>
+  res: NextApiResponse<ResponseType>
 ) {
     console.log(req.session);
     const { token } = await req.body;
@@ -37,7 +37,10 @@ export async function POST(
     return res.json({ ok: true });
 }
 
-export const getTokenRoute = withApiSession(withApiHandler("POST",POST));
+export const getTokenRoute = withApiSession(withHandler({
+  method:"POST",
+  handler:POST,
+}));
 
 // 1. 유저 로그인시 서버는 세션 데이터 저장
 // 2. 이 세션 id를 클라이언트의 쿠키로 저장 (쿠키는 텍스트파일로 저장되는 데이터 조각)
