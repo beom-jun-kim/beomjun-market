@@ -1,17 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
+import { NextApiRequest, NextApiResponse } from "next";
+import {
+  withHandler,
+  ResponseType,
+  WithHandlerConfig,
+} from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 import smtpTransport from "@/app/libs/server/email";
 
-export async function POST(req: NextRequest, res: NextResponse<ResponseType>) {
-  const { email, phone } = await req.json();
+export async function POST(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
+  const { email, phone } = await req.body;
 
-  const user = phone ? { phone } : email ? { email } : null; 
+  const user = phone ? { phone } : email ? { email } : null;
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
 
   const token = await client.token.create({
-
     // data: ctrl +클릭 , 값에 user가 꼭 필요하다고 나온다(TokenCreateInput)
     data: {
       payload,
@@ -20,8 +26,8 @@ export async function POST(req: NextRequest, res: NextResponse<ResponseType>) {
       user: {
         // connectOrCreate : user가 있을 경우 token연결. 없으면 생성 후 연결
         connectOrCreate: {
-          where: { 
-            ...user 
+          where: {
+            ...user,
           },
 
           // 데이터가 존재하지 않으면 생성
@@ -60,7 +66,13 @@ export async function POST(req: NextRequest, res: NextResponse<ResponseType>) {
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
 
   // NextResponse.json는 첫번째 인자로 응답 데이터 객체를 받아 객체 형식으로 전달
-  return NextResponse.json({ token, ok: true, status: 200 });
+  return res.json({ token, ok: true, status: 200 });
 }
 
-export { withHandler };
+const handerObjOptions: WithHandlerConfig = {
+  method: "POST",
+  handler: POST,
+  isPrivate: false,
+};
+
+export const handlerOption = withHandler(handerObjOptions);
