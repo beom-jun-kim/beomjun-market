@@ -1,9 +1,16 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 import RootLayout from "./layout";
+import useUser from "./libs/client/useUser";
 
 const Home: NextPage = () => {
+  const user = useUser();
+  console.log("userProfile", user);
   return (
     <RootLayout title="Home" hasTabBar>
+      <Head>
+        <title>Home</title>
+      </Head>
       <div className="flex flex-col space-y-5 px-5">
         {[...Array(10)].map((_, i) => (
           <div
