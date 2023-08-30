@@ -1,10 +1,12 @@
+"use client";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import RootLayout from "./layout";
 import useUser from "./libs/client/useUser";
 
 const Home: NextPage = () => {
-  const user = useUser();
+  const { user, isLoading } = useUser();
   console.log("userProfile", user);
   return (
     <RootLayout title="Home" hasTabBar>
