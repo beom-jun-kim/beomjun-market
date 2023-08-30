@@ -1,23 +1,18 @@
-"use client";
-
+import useSWR from "swr";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function useUser() {
-  const [user, setUser] = useState();
+  const { data, error, mutate } = useSWR("/api/me");
   const router = useRouter();
   useEffect(() => {
-    fetch("/api/me")
-      .then((response) => response.json())
-      .then((data) => {
-        if(!data.ok){
+    if (data && !data.ok) {
+      router.replace("/enter");
+    }
+  }, [data, router]);
 
-            // replace : 이전 페이지에 대한 히스토리를 남기지 X
-            router.replace("/enter");
-        }
-        setUser(data.profile);
-      });
-  }, [router]);
-
-  return user;
+  return {
+    user: data?.profile,
+    isLoading: !data && !error,
+  };
 }
