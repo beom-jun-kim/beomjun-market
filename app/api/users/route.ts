@@ -17,7 +17,6 @@ export async function POST(
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
   const token = await client.token.create({
-    // data: ctrl +클릭 , 값에 user가 꼭 필요하다고 나온다(TokenCreateInput)
     data: {
       payload,
       user: {
