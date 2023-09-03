@@ -4,6 +4,6 @@ interface ButtonProp {
 
 export default function Button({text}:ButtonProp) {
   return (
-    <button className="bg-blue-500 py-3 text-white rounded-md">{text}</button>
+    <button className="bg-blue-500 p-3 text-white rounded-md">{text}</button>
   );
 }

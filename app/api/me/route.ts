@@ -15,7 +15,7 @@ export async function GET(
   res.status(200).json({ ok: true, profile });
 }
 
-export const getP0rofileRoute = withApiSession(
+export const getProfileRoute = withApiSession(
   withHandler({
     method: "GET",
     handler: GET,
