@@ -9,6 +9,7 @@ import { cls } from "@/app/libs/client/utils";
 import RootLayout from "@/app/layout";
 import useMutation from "@/app/libs/client/useMutation";
 import { useRouter } from "next/navigation";
+import { signIn, useSession,signOut } from 'next-auth/react';
 
 interface EnterForm {
   email?: string;
@@ -63,8 +64,10 @@ const Enter: NextPage = () => {
     }
   }, [tokenData, router]); /* 둘중 하나가 값이 변경 될 때 랜더링  */
 
+  const { data:session } = useSession();
+
   return (
-    <RootLayout title="Login" hasTabBar>
+    <RootLayout title="Login" hasTabBar session>
       <div className="mt-16 px-4">
         <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
         <div className="mt-12">
@@ -182,6 +185,11 @@ const Enter: NextPage = () => {
             </div>
           </div>
         </div>
+        {
+          !session ?
+            <button onClick={() => signIn()}>SNS Login →</button> :
+            <button onClick={() => signOut({callbackUrl:'/'})}>Sign Out</button>
+        }
       </div>
     </RootLayout>
   );

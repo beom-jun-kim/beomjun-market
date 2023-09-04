@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   const { user, isLoading } = useUser();
   console.log("userProfile", user);
   return (
-    <RootLayout title="Home" hasTabBar>
+    <RootLayout title="Home" hasTabBar session>
       <Head>
         <title>Home</title>
       </Head>

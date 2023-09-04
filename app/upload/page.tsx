@@ -35,7 +35,7 @@ const Upload: NextPage = () => {
     if (data?.ok) {
       router.push(`/items/${data.product.id}`);
     }
-  }, [data]);
+  }, [data,router]);
   return (
     <RootLayout canGoBack title="Upload Product">
       <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
