@@ -9,7 +9,7 @@ import { cls } from "@/app/libs/client/utils";
 import RootLayout from "@/app/layout";
 import useMutation from "@/app/libs/client/useMutation";
 import { useRouter } from "next/navigation";
-import { signIn, useSession,signOut } from 'next-auth/react';
+import { signIn, useSession, signOut } from "next-auth/react";
 
 interface EnterForm {
   email?: string;
@@ -63,8 +63,10 @@ const Enter: NextPage = () => {
       router.push("/");
     }
   }, [tokenData, router]); /* 둘중 하나가 값이 변경 될 때 랜더링  */
-
-  const { data:session } = useSession();
+  
+  // useSession() : 로그인 여부를 알려주는 훅, 배열의 첫번째 인자로 유저의 정보를 return
+  const { data: session } = useSession();
+  console.log("session",session);
 
   return (
     <RootLayout title="Login" hasTabBar session>
@@ -182,14 +184,17 @@ const Enter: NextPage = () => {
                   />
                 </svg>
               </button>
+
+              {!session ? (
+                <button onClick={() => signIn()}>SNS Login →</button>
+              ) : (
+                <button onClick={() => signOut()}>
+                  Sign Out
+                </button>
+              )}
             </div>
           </div>
         </div>
-        {
-          !session ?
-            <button onClick={() => signIn()}>SNS Login →</button> :
-            <button onClick={() => signOut({callbackUrl:'/'})}>Sign Out</button>
-        }
       </div>
     </RootLayout>
   );
