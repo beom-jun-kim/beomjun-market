@@ -17,7 +17,7 @@ export async function GET(
 
 export const getProfileRoute = withApiSession(
   withHandler({
-    method: "GET",
+    methods: ["GET"],
     handler: GET,
   })
 );

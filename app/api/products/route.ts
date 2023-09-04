@@ -7,29 +7,35 @@ export async function POST(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const {
-    body: { name, price, description },
-    session: { user },
-  } = req;
-  const product = await client.product.create({
-    data: {
-      name,
-      price: +price,
-      description,
-      image: "",
-      user: {
-        connect: {
-          id: user?.id,
+  if (req.method === "GET") {
+    const product = await client.product.findMany({})
+    res.json({ok:true,product})
+  }
+  if (req.method === "POST") {
+    const {
+      body: { name, price, description },
+      session: { user },
+    } = req;
+    const product = await client.product.create({
+      data: {
+        name,
+        price: +price,
+        description,
+        image: "",
+        user: {
+          connect: {
+            id: user?.id,
+          },
         },
       },
-    },
-  });
-  res.status(200).json({ ok: true, product });
+    });
+    res.status(200).json({ ok: true, product });
+  }
 }
 
 export const getProductsRoute = withApiSession(
   withHandler({
-    method: "POST",
+    methods: ["GET", "POST"],
     handler: POST,
   })
 );

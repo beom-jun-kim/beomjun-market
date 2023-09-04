@@ -38,7 +38,7 @@ export async function POST(
 }
 
 export const getTokenRoute = withApiSession(withHandler({
-  method:"POST",
+  methods:["POST"],
   handler:POST,
 }));
 
