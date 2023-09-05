@@ -26,7 +26,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.gitignore에 .env를 포함시켰는데도 .env가 올라가는 이유
+
 # vercel
 .vercel
 
