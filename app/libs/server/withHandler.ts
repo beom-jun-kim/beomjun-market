@@ -13,7 +13,6 @@ export interface WithHandlerConfig {
   isPrivate?: boolean
 }
 
-// protect handler
 export function withHandler(
   {methods,handler,isPrivate} : WithHandlerConfig
 ) {
