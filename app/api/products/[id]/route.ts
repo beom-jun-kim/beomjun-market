@@ -51,7 +51,7 @@ export async function GET(
       created:"desc",
     },
 
-    // 특정 갯수
+    // 특정 갯수만큼
     take:4,
   });
 
