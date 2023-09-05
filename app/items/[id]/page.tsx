@@ -1,16 +1,28 @@
 // 데이터 로딩 구현
 
+import { getProductsRoute } from "@/app/api/products/route";
 import RootLayout from "@/app/layout";
+import { Product,User } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
+interface ProductWithUser extends Product {
+  user: User;
+}
+
+interface ItemDetailResponse {
+  ok: boolean;
+  product: ProductWithUser;
+  relatedProducts:Product[];
+}
+
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR(
+  const { data } = useSWR<ItemDetailResponse>(
     router.query.id ? `api/products/${router.query.id}` : null
-  );
+  ); 
   console.log(data);
   return (
     <RootLayout canGoBack session>
@@ -67,13 +79,15 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-500">Similar items</h2>
           <div className="grid grid-cols-2 gap-4">
-            {[...Array(5)].map((_, i) => (
-              <div key={i}>
+          <Link href={`/profile/${data?.product?.user?.id}`}>
+            {data?.relatedProducts.map((relProd) => (
+              <div key={relProd.id}>
                 <div className="h-56 w-full mb-4 bg-slate-500" />
-                <h3 className="text-sm text-gray-700 -mb-1">Galaxy S60</h3>
-                <span className="text-sm font-medium text-gray-600">$6</span>
+                <h3 className="text-sm text-gray-700 -mb-1">{relProd.name}</h3>
+                <span className="text-sm font-medium text-gray-600">{relProd.price}</span>
               </div>
             ))}
+          </Link>
           </div>
         </div>
       </div>
