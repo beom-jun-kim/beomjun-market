@@ -3,7 +3,7 @@ import RootLayout from "@/app/layout";
 
 const Profile: NextPage = () => {
   return (
-    <RootLayout title="나의 당근" hasTabBar>
+    <RootLayout title="나의 당근" hasTabBar session>
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
           <div className="w-16 h-16 bg-slate-500 rounded-full" />

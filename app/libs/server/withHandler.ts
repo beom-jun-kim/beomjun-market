@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 
 export interface ResponseType {
   ok: boolean;
@@ -13,7 +14,6 @@ export interface WithHandlerConfig {
   isPrivate?: boolean
 }
 
-// protect handler
 export function withHandler(
   {methods,handler,isPrivate} : WithHandlerConfig
 ) {
