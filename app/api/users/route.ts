@@ -59,7 +59,7 @@ export async function POST(
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
 
   // NextResponse.json는 첫번째 인자로 응답 데이터 객체를 받아 객체 형식으로 전달
-  return res.json({ token, ok: true, status: 200});
+  return res.json({ token, ok: true, status: 200 });
 }
 
 const handerObjOptions: WithHandlerConfig = {
