@@ -66,7 +66,6 @@ const Enter: NextPage = () => {
   
   // useSession() : 로그인 여부를 알려주는 훅, 배열의 첫번째 인자로 유저의 정보를 return
   const { data: session } = useSession();
-  console.log("session",session);
 
   return (
     <RootLayout title="Login" hasTabBar session>

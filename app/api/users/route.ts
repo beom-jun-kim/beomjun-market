@@ -12,6 +12,7 @@ export async function POST(
   res: NextApiResponse<ResponseType>
 ) {
   const { email, phone } = await req.body;
+  console.log("email", email, "phone", phone);
 
   const user = phone ? { phone } : email ? { email } : null;
   const payload =
@@ -22,7 +23,7 @@ export async function POST(
       user: {
         connectOrCreate: {
           where: {
-            ...user,
+            email:"asdf@asdf",
           },
           create: {
             name: "beomjun",
@@ -53,7 +54,6 @@ export async function POST(
       }
     );
     smtpTransport.close();
-    console.log(result);
   }
 
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
