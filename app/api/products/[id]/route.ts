@@ -8,7 +8,6 @@ export async function GET(
   res: NextApiResponse<ResponseType>
 ) {
   const { id } = req.query;
-  console.log("id",id)
   const product = await client.product.findUnique({
     where: {
       // 문자열을 숫자열로 변환, !: non-null(항상 null이 아니다)

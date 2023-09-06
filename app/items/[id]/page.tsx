@@ -7,7 +7,6 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-// import useCustomRouter from '@/app/libs/client/useCustomRouter';
 
 interface ProductWithUser extends Product {
   user: User;
