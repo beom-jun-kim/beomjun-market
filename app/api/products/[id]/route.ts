@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withHandler, ResponseType } from "@/app/libs/server/withHandler";
 import client from "@/app/libs/server/client";
 import { withApiSession } from "@/app/libs/server/withSession";
-import { workerData } from "worker_threads";
 
 export async function GET(
   req: NextApiRequest,
