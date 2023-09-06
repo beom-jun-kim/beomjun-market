@@ -22,7 +22,7 @@ interface ItemDetailResponse {
 const ItemDetail: NextPage = () => {
   const params = useParams();
   const { data } = useSWR<ItemDetailResponse>(
-    params.id ? `api/products/${params.id}` : null
+    params.id ? `/api/products/${params.id}` : null
   );
   return (
     <RootLayout canGoBack session>
