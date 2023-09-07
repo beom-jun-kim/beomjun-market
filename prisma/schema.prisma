@@ -30,6 +30,7 @@ model User {
   updated DateTime @updatedAt()
   tokens   Token[]
   product Product[]
+  favs Fav[]
 }
 
 // 추가후 npx prisma db push : db를 수정하는 동시에 prisma client를 만들어줌
@@ -62,5 +63,18 @@ model Product {
  name String
  price Int
  description String @db.MediumText
+ favs Fav[]
  @@index([userId])
+}
+
+model Fav {
+  id Int @id @default(autoincrement()) 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  created DateTime @default(now())
+  updated DateTime @updatedAt()
+  @@index([userId])
+  @@index([productId])
 }
