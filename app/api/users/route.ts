@@ -12,9 +12,9 @@ export async function POST(
   res: NextApiResponse<ResponseType>
 ) {
   const { email, phone } = await req.body;
-  console.log("email", email, "phone", phone);
 
   const user = phone ? { phone } : email ? { email } : null;
+
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
   const token = await client.token.create({
@@ -57,8 +57,6 @@ export async function POST(
   }
 
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
-
-  // NextResponse.json는 첫번째 인자로 응답 데이터 객체를 받아 객체 형식으로 전달
   return res.json({ token, ok: true, status: 200 });
 }
 

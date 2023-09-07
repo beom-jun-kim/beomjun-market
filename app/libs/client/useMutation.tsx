@@ -30,10 +30,10 @@ export default function useMutation<T = any>(
     // api 요청을 보내는 로직
     fetch(url, {
       method: "POST",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
     })
       // 상태를 업데이트 하는 로직 : api 요청에 따른 상태 변화를 추적하고 렌더링에 활용
       .then((response) => response.json().catch(() => {}))
