@@ -51,7 +51,7 @@ model Token {
   updated DateTime @updatedAt()    
   @@index([userId])
 }
-// 서버연결 안될시 : 서버 종료후 , connet명령어 후 push 명령어 후 서버시작
+// 서버연결 안될시 : 서버 종료후 , connet명령어 후 push 명령어 후 서버
 
 model Product {
  id Int @id @default(autoincrement()) 
