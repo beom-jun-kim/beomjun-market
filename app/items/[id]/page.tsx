@@ -6,9 +6,10 @@ import RootLayout from "@/app/layout";
 import { Product, User } from "@prisma/client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import useSWR from "swr";
+import useSWR, { mutate, useSWRConfig } from "swr";
 import useMutation from "@/app/libs/client/useMutation";
 import { cls } from "@/app/libs/client/utils";
+import useUser from "@/app/libs/client/useUser";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -22,16 +23,24 @@ interface ItemDetailResponse {
 }
 
 const ItemDetail: NextPage = () => {
+  const { user, isLoading } = useUser();
+  const { mutate } = useSWRConfig();
   const params = useParams();
 
   // useSWR : 데이터 요청해서 가져오고 캐싱 (GET)
-  const { data } = useSWR<ItemDetailResponse>(
+  const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
     params.id ? `/api/products/${params.id}` : null
   );
 
   // useMutation : POST로 활용
-  const [toggleFav] = useMutation(`/api/products/${params.id}/fav`);
+  // toggleFav : 백엔드에 요청
+  const [toggleFav, loading] = useMutation(`/api/products/${params.id}/fav`);
   const onFavoriteClick = () => {
+    if (!loading) {
+      toggleFav({});
+    }
+    boundMutate((prev:any) => prev && { ...prev, isLiked: !prev.isLiked }, false);
+
     // {}: 데이터가 있을 수도 있고 없을 수도 있으니
     toggleFav({});
   };

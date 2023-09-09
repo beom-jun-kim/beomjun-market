@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function useUser() {
-  const { data, error, mutate } = useSWR("/api/me");
+  const { data, error} = useSWR("/api/me");
   const router = useRouter();
   useEffect(() => {
     if (data && !data.ok) {
