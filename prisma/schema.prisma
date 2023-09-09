@@ -10,7 +10,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-
 model User {
 
   // @ : 식별자
@@ -31,6 +30,9 @@ model User {
   tokens   Token[]
   product Product[]
   favs Fav[]
+  Post Post[]
+  answers Answer[]
+  wondering Wondering[]
 }
 
 // 추가후 npx prisma db push : db를 수정하는 동시에 prisma client를 만들어줌
@@ -77,4 +79,41 @@ model Fav {
   updated DateTime @updatedAt()
   @@index([userId])
   @@index([productId])
+}
+
+model Post {
+  id Int @id @default(autoincrement())  
+  created DateTime @default(now())
+  updated DateTime @updatedAt()
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  question String @db.MediumText
+  answers Answer[]
+  wondering Wondering[]
+  @@index([userId])
+}
+
+model Answer {
+  id Int @id @default(autoincrement())
+  created DateTime @default(now())
+  updated DateTime @updatedAt()
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  answer String @db.MediumText
+  @@index([userId])
+  @@index([postId])
+}
+
+model Wondering {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  created DateTime @default(now())
+  updated DateTime @updatedAt()
+  @@index([userId])
+  @@index([postId])
 }

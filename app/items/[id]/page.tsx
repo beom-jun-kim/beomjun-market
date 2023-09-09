@@ -34,15 +34,18 @@ const ItemDetail: NextPage = () => {
 
   // useMutation : POST로 활용
   // toggleFav : 백엔드에 요청
-  const [toggleFav, loading] = useMutation(`/api/products/${params.id}/fav`);
+  const [toggleFav, { loading }] = useMutation(
+    `/api/products/${params.id}/fav`
+  );
   const onFavoriteClick = () => {
     if (!loading) {
+      // {}: 데이터가 있을 수도 있고 없을 수도 있으니
       toggleFav({});
     }
-    boundMutate((prev:any) => prev && { ...prev, isLiked: !prev.isLiked }, false);
-
-    // {}: 데이터가 있을 수도 있고 없을 수도 있으니
-    toggleFav({});
+    boundMutate(
+      (prev: any) => prev && { ...prev, isLiked: !prev.isLiked },
+      false
+    );
   };
   return (
     <RootLayout canGoBack session>

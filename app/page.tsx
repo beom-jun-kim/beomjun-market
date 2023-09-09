@@ -7,7 +7,7 @@ import RootLayout from "./layout";
 import useUser from "./libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
-// import { Product } from "@prisma/client";
+import { Product } from "@prisma/client";
 
 interface ProductWithCount extends Product {
   _count: {
