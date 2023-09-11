@@ -103,3 +103,7 @@ const EditProfile: NextPage = () => {
 };
 
 export default EditProfile;
+
+// 1. model 리팩토링
+// 2. useUser로 보호
+// 3. next-auth 기능
