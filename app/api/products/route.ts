@@ -10,15 +10,15 @@ export async function POST(
 ) {
   if (req.method === "GET") {
     const product = await client.product.findMany({
-      include:{
-        _count:{
-          select:{
-            favs:true,
-          }
-        }
-      }
-    })
-    res.json({ok:true,product})
+      include: {
+        _count: {
+          select: {
+            favs: true,
+          },
+        },
+      },
+    });
+    res.json({ ok: true, product });
   }
   if (req.method === "POST") {
     const {
@@ -45,12 +45,12 @@ export async function POST(
 export const getProductsRoute = withApiSession(
   withHandler({
     methods: ["GET", "POST"],
-    handler: (req,res) => {
-      if(req.method === "GET") {
-        return GET(req,res);
-      } else if (req.method === "POST"){
-        return POST(req,res)
+    handler: (req, res) => {
+      if (req.method === "GET") {
+        return GET(req, res);
+      } else if (req.method === "POST") {
+        return POST(req, res);
       }
-    }
+    },
   })
 );
