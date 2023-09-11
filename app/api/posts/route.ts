@@ -40,10 +40,10 @@ export async function POST(
     const parsedLongitude =
       typeof longitude === "string" ? parseFloat(longitude.toString()) : NaN;
 
-    if (isNaN(parsedLatitude) || isNaN(parsedLongitude)) {
-      res.json({ ok: false, error: "잘못된 위도 또는 경도" });
-      return;
-    }
+    // if (String(parsedLatitude) || String(parsedLongitude)) {
+    //   res.json({ ok: false, error: "잘못된 위도 또는 경도" });
+    //   return;
+    // }
 
     const posts = await client.post.findMany({
       include: {
