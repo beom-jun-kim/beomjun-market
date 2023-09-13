@@ -15,6 +15,20 @@ export async function GET(
     where: {
       id: +id!,
     },
+    include: {
+      message: {
+        select: {
+          message: true,
+          id: true,
+          user: {
+            select: {
+              avatar: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
   });
   if (!stream) {
     return res.status(404).json({ ok: false });
