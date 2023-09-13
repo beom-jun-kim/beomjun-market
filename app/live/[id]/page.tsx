@@ -1,79 +1,62 @@
-import RootLayout from "@/app/layout";
 import type { NextPage } from "next";
+import Layout from "@/app/components/layout";
+import Message from "@/app/components/message";
+import useSWR from "swr";
+import { Stream } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import useMutation from "@/app/libs/client/useMutation";
+import { useParams } from "next/navigation";
+
+interface StreamResponse {
+  ok: true;
+  stream: Stream;
+}
+
+interface MessageFrom {
+  message: string;
+}
 
 const Stream: NextPage = () => {
+  const params = useParams();
+  const { register, handleSubmit, reset } = useForm<MessageFrom>();
+  const [message, { data: messageData, loading }] = useMutation(
+    `/api/streams/${params.id}/messages`
+  );
+  const { data } = useSWR<StreamResponse>(
+    params.id ? `/api/streams/${params.id}` : null
+  );
+  const onValid = (valueDate: MessageFrom) => {
+    if (loading) return;
+    reset();
+    message(valueDate);
+  };
   return (
-    <RootLayout canGoBack>
-      <div className="px-4 space-y-4">
+    <Layout canGoBack>
+      <div className="py-10 px-4  space-y-4">
         <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
         <div className="mt-5">
           <h1 className="text-3xl font-bold text-gray-900">
-            맥북에어 m1 256g (매직마우스 포함)
+            {data?.stream?.name}
           </h1>
-          <span className="text-2xl block mt-3 text-gray-900">$1400</span>
-          <p className=" my-6 text-gray-700">
-            못할 미묘한 과실이 구하지 청춘을 얼마나 천고에 청춘이 같이,
-            그리하였는가 행복스럽고 내려온 영원히 보배를 아름다우냐? 품고 시들어
-            보이는 별과 것은 힘있다. 오아이스도 얼음 목숨이 자신과 있는 운다.
-            같은 쓸쓸한 사는가 위하여 창공에 운다. 청춘 끝까지 그들의 인간이
-            돋고, 속잎나고, 군영과 맺어, 운다.
-          </p>
+          <span className="text-2xl block mt-3 text-gray-900">
+            ${data?.stream?.price}
+          </span>
+          <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>5,000원만 네고해주시면 안될까요?</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>3,000원까지 하겠습니다</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>그럼 어쩔 수 없네요</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>죄송하지만 더 이상은 힘들어요ㅜㅜ</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>저 살래요!</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>네 거래는 언제 어디서 하실 수 있죠?</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>서울 특별시 동작구 xx아파트 앞입니다</p>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-              <div className="w-8 h-8 rounded-full bg-slate-400" />
-              <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-                <p>네 오후 5시까지 가겠습니다</p>
-              </div>
-            </div>
+            <Message message="Hi how much are you selling them for?" />
+            <Message message="I want ￦20,000" reversed />
+            <Message message="미쳤어" />
           </div>
           <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
-            <div className="flex relative max-w-md items-center  w-full mx-auto">
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="flex relative max-w-md items-center  w-full mx-auto"
+            >
               <input
+                {...register("message", { required: true })}
                 type="text"
                 className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
               />
@@ -82,11 +65,11 @@ const Stream: NextPage = () => {
                   &rarr;
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
-    </RootLayout>
+    </Layout>
   );
 };
 

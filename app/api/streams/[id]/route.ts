@@ -8,23 +8,18 @@ export async function GET(
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    session: { user },
+    query: { id },
   } = req;
-  const reviews = await client.review.findMany({
+
+  const stream = await client.stream.findUnique({
     where: {
-      createdForId: user?.id,
-    },
-    include: {
-      createdBy: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true,
-        },
-      },
+      id: +id!,
     },
   });
-  return res.status(200).json({ ok: true, reviews });
+  if (!stream) {
+    return res.status(404).json({ ok: false });
+  }
+  return res.json({ ok: true, stream });
 }
 
 export const getProfileRoute = withApiSession(
