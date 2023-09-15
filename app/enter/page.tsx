@@ -9,7 +9,6 @@ import { cls } from "@/app/libs/client/utils";
 import RootLayout from "@/app/layout";
 import useMutation from "@/app/libs/client/useMutation";
 import { useRouter } from "next/navigation";
-import { signIn, useSession, signOut } from "next-auth/react";
 
 interface EnterForm {
   email?: string;
@@ -25,12 +24,8 @@ interface MutationResult {
 }
 
 const Enter: NextPage = () => {
-  // useMutation : 첫번째 인자는 fn , 두번째는 obj
-  // 유저 데이터 form hook
-  const [enter, { loading, data, error }] =
-    useMutation<MutationResult>("/api/users");
+  const [enter, { loading, data }] = useMutation<MutationResult>("/api/users");
 
-  // token 데이터 form hook
   // confirmToken으로 이름을 바꿀 수 있는 이유, useMutation이 배열을 리턴하기 때문
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<MutationResult>("/api/token");
@@ -48,8 +43,8 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
   const onValid = (valueData: EnterForm) => {
-    if (loading) return; /* 새로운 요청을 보내지 않도록 함수 실행을 중지 */
-    enter(valueData); /* loading 상태가 false라면 api 요청을 위한 함수 호출 */
+    if (loading) return;
+    enter(valueData);
   };
 
   const onTokenValid = (tokenValueData: TokenForm) => {
@@ -62,10 +57,7 @@ const Enter: NextPage = () => {
     if (tokenData?.ok) {
       router.push("/");
     }
-  }, [tokenData, router]); /* 둘중 하나가 값이 변경 될 때 랜더링  */
-  
-  // useSession() : 로그인 여부를 알려주는 훅, 배열의 첫번째 인자로 유저의 정보를 return
-  const { data: session } = useSession();
+  }, [tokenData, router]);
 
   return (
     <RootLayout title="Login" hasTabBar session>
@@ -183,14 +175,6 @@ const Enter: NextPage = () => {
                   />
                 </svg>
               </button>
-
-              {!session ? (
-                <button onClick={() => signIn()}>SNS Login →</button>
-              ) : (
-                <button onClick={() => signOut()}>
-                  Sign Out
-                </button>
-              )}
             </div>
           </div>
         </div>
