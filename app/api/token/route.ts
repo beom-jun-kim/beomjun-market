@@ -7,40 +7,41 @@ export async function POST(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-    console.log(req.session);
-    const { token } = await req.body;
+  const { token } = await req.body;
 
-    const foundToken = await client.token.findUnique({
-      where: {
-        payload: token,
-      },
-    });
+  const foundToken = await client.token.findUnique({
+    where: {
+      payload: token,
+    },
+  });
 
-    if (!foundToken) {
-      return res.status(400).end();
-    }
+  if (!foundToken) {
+    return res.json({ok:false});
+  }
 
-    // user는 세션 데이터에서 유저정보 객체
-    req.session.user = {
-      id: foundToken.userId,
-    };
+  // user는 세션 데이터에서 유저정보 객체
+  req.session.user = {
+    id: foundToken.userId,
+  };
 
-    // 세션에 저장한 변경 사항이 실제 서버에 반영
-    await req.session.save();
+  // 세션에 저장한 변경 사항이 실제 서버에 반영
+  await req.session.save();
 
-    // 토큰 삭제
-    await client.token.deleteMany({
-      where: {
-        userId: foundToken.userId,
-      },
-    });
-    return res.json({ ok: true });
+  // 토큰 삭제
+  await client.token.deleteMany({
+    where: {
+      userId: foundToken.userId,
+    },
+  });
+  return res.json({ ok: true, foundToken });
 }
 
-export const getTokenRoute = withApiSession(withHandler({
-  methods:["POST"],
-  handler:POST,
-}));
+export const getTokenRoute = withApiSession(
+  withHandler({
+    methods: ["POST"],
+    handler: POST,
+  })
+);
 
 // 1. 유저 로그인시 서버는 세션 데이터 저장
 // 2. 이 세션 id를 클라이언트의 쿠키로 저장 (쿠키는 텍스트파일로 저장되는 데이터 조각)

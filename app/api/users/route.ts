@@ -11,10 +11,12 @@ export async function POST(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { email, phone } = await req.body;
+  const {
+    body: { email, phone },
+  } = req;
 
-  const user = phone ? { phone } : email ? { email } : null;
-
+  const user = email ? { email } : phone ? { phone } : null;
+  if (!user) return res.status(400).json({ ok: false });
   const payload =
     Math.floor(10000 + Math.random() * 90000) + ""; /* + "" : 문자열로 변환 */
   const token = await client.token.create({
@@ -23,7 +25,7 @@ export async function POST(
       user: {
         connectOrCreate: {
           where: {
-            email:"asdf@asdf",
+            ...user,
           },
           create: {
             name: "beomjun",
@@ -57,7 +59,7 @@ export async function POST(
   }
 
   // token을 추가하면 client가 새로 생성됨 => 서버 재시작
-  return res.json({ token, ok: true, status: 200 });
+  return res.json({ ok: true, token });
 }
 
 const handerObjOptions: WithHandlerConfig = {
