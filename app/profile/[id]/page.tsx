@@ -1,5 +1,7 @@
+"use client";
+
 import type { NextPage } from "next";
-import Layout from "@/app/components/layout";
+import RootLayout from "@/app/layout";
 import useUser from "@/app/libs/client/useUser";
 import useSWR from "swr";
 import { User, Review } from "@prisma/client";
@@ -18,7 +20,7 @@ const Profile: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<ReviewsResponse>("/api/reviews");
   return (
-    <Layout title="나의 당근" hasTabBar>
+    <RootLayout title="나의 당근" hasTabBar session>
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
           <div className="w-16 h-16 bg-slate-500 rounded-full" />
@@ -127,7 +129,7 @@ const Profile: NextPage = () => {
           </div>
         ))}
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 

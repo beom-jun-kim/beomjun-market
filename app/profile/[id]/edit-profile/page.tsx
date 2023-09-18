@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
-import Layout from "@/app/components/layout";
+import RootLayout from "@/app/layout";
 import { useForm } from "react-hook-form";
 import { use, useEffect, useState } from "react";
 import useUser from "@/app/libs/client/useUser";
@@ -69,7 +69,7 @@ const EditProfile: NextPage = () => {
     }
   }, [avatar]);
   return (
-    <Layout canGoBack title="Edit Profile">
+    <RootLayout canGoBack title="Edit Profile" session>
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
         <div className="flex items-center space-x-3">
           {avatarPreview ? (
@@ -123,7 +123,7 @@ const EditProfile: NextPage = () => {
         ) : null}
         <Button text={loading ? "loading..." : "변경하기"} />
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 

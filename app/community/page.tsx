@@ -1,3 +1,5 @@
+"use client";
+
 import type { NextPage } from "next";
 import RootLayout from "@/app/layout";
 import Link from "next/link";

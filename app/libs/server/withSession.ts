@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
 import { withIronSessionApiRoute } from "iron-session/next";
 import type { IronSessionOptions } from "iron-session";
 
@@ -14,6 +13,9 @@ declare module "iron-session" {
 const cookieOptions: IronSessionOptions = {
   cookieName: "beomjun_session",
   password: process.env.COOKIE_PASSWORD!,
+  cookieOptions: {
+    secure: process.env.NODE_ENV === 'production',
+  },
 };
 
 export function withApiSession(fn: any) {

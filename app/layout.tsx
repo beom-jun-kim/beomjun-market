@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cls } from "./libs/client/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import { SWRConfig } from "swr";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ interface LayoutProps {
   hasTabBar?: boolean;
   canGoBack?: boolean;
   children: React.ReactNode;
-  session:any;
+  session: any;
 }
 
 export default function RootLayout({
@@ -31,16 +31,22 @@ export default function RootLayout({
   canGoBack,
   session,
 }: LayoutProps) {
-  const router = useRouter();
+  const router = usePathname();
+  const backRouter = useRouter();
+  const pageId =useParams();
   const backButton = () => {
-
     // router.back() : 브라우저의 뒤로 버튼을 클릭하는 것
     // router.push() : 클라이언트 측 전환을 처리
-    router.back();
+    backRouter.back();
   };
 
   return (
-    <SWRConfig value={{fetcher:(url: string) => fetch(url).then((response) => response.json())}}>
+    <SWRConfig
+      value={{
+        fetcher: (url: string) =>
+          fetch(url).then((response) => response.json()),
+      }}
+    >
       <SessionProvider session={session}>
         <html lang="en">
           <body className={inter.className}>
@@ -61,7 +67,15 @@ export default function RootLayout({
                 <ul className="max-w-lg w-full flex justify-around items-center">
                   {/* 홈 */}
                   <li>
-                    <Link href="/" className="flex flex-col items-center">
+                    <Link
+                      href="/"
+                      className={cls(
+                        "flex flex-col items-center space-y-2 ",
+                        router === "/"
+                          ? "text-orange-500"
+                          : "hover:text-gray-500 transition-colors"
+                      )}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -84,7 +98,12 @@ export default function RootLayout({
                   <li>
                     <Link
                       href="/community"
-                      className="flex flex-col items-center"
+                      className={cls(
+                        "flex flex-col items-center space-y-2 ",
+                        router === "/community"
+                          ? "text-orange-500"
+                          : "hover:text-gray-500 transition-colors"
+                      )}
                     >
                       <svg
                         className="w-6 h-6"
@@ -106,7 +125,15 @@ export default function RootLayout({
 
                   {/* 채팅 */}
                   <li className="text-center">
-                    <Link href="/chats" className="flex flex-col items-center">
+                    <Link
+                      href="/chats"
+                      className={cls(
+                        "flex flex-col items-center space-y-2 ",
+                        router === "/chats"
+                          ? "text-orange-500"
+                          : "hover:text-gray-500 transition-colors"
+                      )}
+                    >
                       <svg
                         className="w-6 h-6"
                         fill="none"
@@ -127,7 +154,15 @@ export default function RootLayout({
 
                   {/* 라이브 */}
                   <li className="text-center">
-                    <Link href="/live" className="flex flex-col items-center">
+                    <Link
+                      href="/live"
+                      className={cls(
+                        "flex flex-col items-center space-y-2 ",
+                        router === "/live"
+                          ? "text-orange-500"
+                          : "hover:text-gray-500 transition-colors"
+                      )}
+                    >
                       <svg
                         className="w-6 h-6"
                         fill="none"
@@ -148,7 +183,15 @@ export default function RootLayout({
 
                   {/* 나의 당근 */}
                   <li className="text-center">
-                    <Link href="/profile" className="flex flex-col items-center">
+                    <Link
+                      href={`/profile/${pageId.id}`}
+                      className={cls(
+                        "flex flex-col items-center space-y-2 ",
+                        router === `/profile/${pageId.id}`
+                          ? "text-orange-500"
+                          : "hover:text-gray-500 transition-colors"
+                      )}
+                    >
                       <svg
                         className="w-6 h-6"
                         fill="none"

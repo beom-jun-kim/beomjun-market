@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
-import Layout from "@/app/components/layout";
+import RootLayout from "@/app/layout";
 import TextArea from "@/app/components/textarea";
 import { useForm } from "react-hook-form";
 import useMutation from "@/app/libs/client/useMutation";
@@ -35,7 +35,7 @@ const Create: NextPage = () => {
     }
   }, [data, router]);
   return (
-    <Layout canGoBack title="라이브">
+    <RootLayout canGoBack title="라이브" session>
       <form onSubmit={handleSubmit(onValid)} className=" space-y-4 py-10 px-4">
         <Input
           propRegister={register("name", { required: true })}
@@ -62,7 +62,7 @@ const Create: NextPage = () => {
         />
         <Button text={loading ? "Loading..." : "Go live"} />
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 
