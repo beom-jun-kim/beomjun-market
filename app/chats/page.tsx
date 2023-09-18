@@ -3,7 +3,7 @@ import RootLayout from "@/app/layout";
 
 const Chats: NextPage = () => {
   return (
-    <RootLayout title="채팅" hasTabBar>
+    <RootLayout title="채팅" hasTabBar session>
       {/* // divide : 엘리먼트 사이의 border width를 제어하기 위한 유틸리티 */}
       <div className="py-10 divide-y-[1px] ">
         {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (

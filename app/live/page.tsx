@@ -1,7 +1,9 @@
+"use client";
+
 import type { NextPage } from "next";
 import Link from "next/link";
 import FloatingButton from "@/app/components/floating-button";
-import Layout from "@/app/components/layout";
+import RootLayout from "@/app/layout";
 import { Stream } from "@prisma/client";
 import useSWR from "swr";
 
@@ -13,7 +15,7 @@ interface StreamsResponse {
 const Streams: NextPage = () => {
   const { data } = useSWR<StreamsResponse>(`/api/streams`);
   return (
-    <Layout hasTabBar title="라이브">
+    <RootLayout hasTabBar title="라이브" session>
       <div className=" divide-y-[1px] space-y-4">
         {data?.streams.map((stream) => (
           <Link
@@ -44,7 +46,7 @@ const Streams: NextPage = () => {
           </svg>
         </FloatingButton>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Layout from "@/app/components/layout";
+import RootLayout from "@/app/layout";
 import Message from "@/app/components/message";
 import useSWR from "swr";
 import { Stream } from "@prisma/client";
@@ -72,7 +72,7 @@ const Stream: NextPage = () => {
     message(valueDate);
   };
   return (
-    <Layout canGoBack>
+    <RootLayout canGoBack session>
       <div className="py-10 px-4  space-y-4">
         <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
         <div className="mt-5">
@@ -114,7 +114,7 @@ const Stream: NextPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 
