@@ -7,6 +7,15 @@ import {
 import client from "@/app/libs/server/client";
 import smtpTransport from "@/app/libs/server/email";
 
+declare module "iron-session" {
+  interface UserResponseData {
+    json: {
+      ok: boolean;
+    };
+    status: number;
+  }
+}
+
 export async function POST(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
