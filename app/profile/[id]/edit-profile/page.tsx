@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
 import RootLayout from "@/app/layout";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { use, useEffect, useState } from "react";
 import useUser from "@/app/libs/client/useUser";
 import useMutation from "@/app/libs/client/useMutation";
@@ -36,6 +36,10 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/aSbksvJjax-AUC7qVnaC4A/${user?.avatar}/avatar`
+      );
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/me`);
@@ -46,18 +50,37 @@ const EditProfile: NextPage = () => {
         message: "Email OR Phone number are required. You need to choose one.",
       });
     }
-    if (avatar && avatar.length > 0) {
-      const cloudflareRequest = await (await fetch(`/api/files`)).json();
-      editProfile({ email, phone, name /* avatar:CF */ });
+
+    // ========================== CF
+    if (avatar && avatar.length > 0 && user) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+
+      // formData : Ajax로 form 전송을 가능하게 해주는 FormData 객체를 생성
+      // 페이지 전환 없이 폼 데이터를 전송
+      const form = new FormData();
+      form.append("file", avatar[0], user?.id + "");
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+
+      editProfile({ email, phone, name, avatarId: id });
     } else {
       editProfile({ email, phone, name });
     }
   };
+
   useEffect(() => {
     if (data && !data.ok && data.error) {
       setError("formErrors", { message: data.error });
     }
   }, [data, setError]);
+
+  // ========================== CF
   const [avatarPreview, setAvatarPreview] = useState("");
   const avatar = watch("avatar");
   useEffect(() => {
@@ -68,6 +91,7 @@ const EditProfile: NextPage = () => {
       setAvatarPreview(URL.createObjectURL(file));
     }
   }, [avatar]);
+
   return (
     <RootLayout canGoBack title="Edit Profile" session>
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
