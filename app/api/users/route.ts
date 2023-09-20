@@ -7,7 +7,7 @@ import {
 import client from "@/app/libs/server/client";
 import smtpTransport from "@/app/libs/server/email";
 
-declare module "iron-session" {
+declare module "next" {
   interface UserResponseData {
     json: {
       ok: boolean;
