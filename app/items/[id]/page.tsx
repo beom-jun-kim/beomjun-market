@@ -40,10 +40,12 @@ const ItemDetail: NextPage = () => {
   return (
     <RootLayout canGoBack session>
       <div className="px-4  py-4">
-        <div className="mb-8">
-          <img
+        <div className="relative pb-80">
+          <Image
             src={`https://imagedelivery.net/aSbksvJjax-AUC7qVnaC4A/${data?.product.image}/public`}
-            className="h-96 bg-slate-300"
+            className="h-96 bg-slate-300 object-cover"
+            fill
+            alt={String(data?.product?.name)}
           />
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             <Image
@@ -51,6 +53,7 @@ const ItemDetail: NextPage = () => {
               height={48}
               src={`https://imagedelivery.net/aSbksvJjax-AUC7qVnaC4A/${data?.product?.user?.avatar}/avatar`}
               className="w-12 h-12 rounded-full bg-slate-300"
+              alt={String(data?.product.user.name)}
             />
             <div>
               <p className="text-sm font-medium text-gray-700">
